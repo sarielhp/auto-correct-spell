@@ -3,8 +3,8 @@
 ;; Author: Gemini CLI
 ;; Version: 0.1.0
 ;; Package-Requires: ((emacs "29.1") (jinx "1.0"))
-;; Keywords: convenience, wp, markdown
-;; URL: https://github.com/sariel/auto-correct-spell
+;; Keywords: convenience, wp
+;; URL: https://github.com/sarielhp/auto-correct-spell
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -31,7 +31,6 @@
 ;; - Filters out short words and non-alphabetic strings to avoid issues.
 ;; - Persists new abbrevs to your `abbrev-file-name' immediately.
 ;; - Provides a command to quickly remove the last added correction.
-;; - Integrates with Markdown: auto-enables Jinx and enhances header display.
 ;;
 ;; Installation:
 ;; (require 'auto-correct-spell)
@@ -46,13 +45,6 @@
 (defgroup auto-correct-spell nil
   "Automatic abbrev creation from jinx corrections."
   :group 'editing)
-
-(defcustom auto-correct-spell-markdown-integration t
-  "Whether to enable automatic Markdown integration features.
-When non-nil, `auto-correct-spell' will set up `markdown-mode'
-associations and `jinx-mode' hooks for Markdown files."
-  :type 'boolean
-  :group 'auto-correct-spell)
 
 (defcustom auto-correct-spell-min-length 5
   "Minimum length of misspelled word to be added as an abbrev."
@@ -156,33 +148,6 @@ automatically expanded to the correct form."
     (advice-remove 'jinx--correct-replace #'auto-correct-spell--jinx-advice)
     (advice-remove 'expand-abbrev #'auto-correct-spell--expand-abbrev-advice)))
 
-;;; Markdown Integration
-
-;;;###autoload
-(progn
-  ;; Associate .md files with markdown-mode if not already set
-  (unless (assoc "\\.md\\'" auto-mode-alist)
-    (add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode)))
-
-  (with-eval-after-load 'markdown-mode
-    (add-hook 'markdown-mode-hook
-              (lambda ()
-                (when auto-correct-spell-markdown-integration
-                  ;; Ensure jinx is on for spellchecking
-                  (jinx-mode 1)
-                  ;; Fancy headers: fontify the whole line
-                  (setq-local markdown-fontify-whole-heading-line t))))
-
-    ;; Ensure jinx checks headers
-    (with-eval-after-load 'jinx
-      (dolist (face '(markdown-header-face
-                      markdown-header-face-1
-                      markdown-header-face-2
-                      markdown-header-face-3
-                      markdown-header-face-4
-                      markdown-header-face-5
-                      markdown-header-face-6))
-        (add-to-list 'jinx-include-faces (cons 'markdown-mode face))))))
-
 (provide 'auto-correct-spell)
 ;;; auto-correct-spell.el ends here
+
