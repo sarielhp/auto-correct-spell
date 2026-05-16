@@ -1,0 +1,5 @@
+*.elc
+/jinx.el
+/auto-correct-spell-pkg.el
+/dist/
+*.tar
