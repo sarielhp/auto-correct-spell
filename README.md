@@ -1,8 +1,16 @@
 # auto-correct-spell
 
-`auto-correct-spell` is an Emacs package that integrates the **Jinx** spellchecker with the built-in **abbrev** system. 
+`auto-correct-spell` is an Emacs package that integrates the **Jinx**
+spellchecker with the built-in **abbrev** system. It creates a list of
+auto-correct entries in abbrevs, every time you correct a word. The
+corrections are inserted automatically into the abbrevs table, so that
+next time you type this typo, it is automatically correct. Only words
+of length 5 or longer are inserted automatically in this way. You can
+undo the last insertion.
 
-It creates abbrev entries from manual spellcheck corrections, allowing subsequent typos to be corrected automatically as you type.
+That it --- it creates abbrev entries from manual spellcheck corrections, allowing
+subsequent typos to be corrected automatically as you type.
+
 
 ## How it Works
 
@@ -32,7 +40,7 @@ The next time the same typo is typed followed by a trigger character (like `SPC`
 
 ```elisp
 (use-package auto-correct-spell
-  :straight (auto-correct-spell :type git :host github :repo "your-username/auto-correct-spell")
+  :straight (auto-correct-spell :type git :host github :repo "sarielhp/auto-correct-spell")
   :init
   (auto-correct-spell-mode 1))
 ```

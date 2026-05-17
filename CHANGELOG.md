@@ -14,8 +14,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Command `auto-correct-spell-remove-last-abbrev` to undo the most recent correction.
 - Word filtering based on length and alphabetic characters.
 - Persistence of abbrevs to the user's abbrev file.
-- **Markdown Integration**: Automatic `markdown-mode` association for `.md` files.
-- **Markdown Integration**: Automatic `jinx-mode` activation in Markdown buffers.
-- **Markdown Integration**: Enhanced header styling and spellchecking support.
 - Comprehensive test suite.
 - GPLv3 license.
+
