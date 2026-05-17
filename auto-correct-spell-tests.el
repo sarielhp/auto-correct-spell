@@ -52,12 +52,22 @@
 (ert-deftest auto-correct-spell-test-mode-toggle ()
   "Test `auto-correct-spell-mode' toggle logic."
   ;; Mock advice functions
-  (cl-letf (((symbol-function 'advice-add) (lambda (&rest _) nil))
-            ((symbol-function 'advice-remove) (lambda (&rest _) nil)))
-    (auto-correct-spell-mode 1)
-    (should auto-correct-spell-mode)
-    (auto-correct-spell-mode -1)
-    (should-not auto-correct-spell-mode)))
+  (let ((added-advice '()))
+    (cl-letf (((symbol-function 'advice-add) 
+               (lambda (symbol _where function) (push (cons symbol function) added-advice)))
+              ((symbol-function 'advice-remove) 
+               (lambda (symbol function) (setq added-advice (delete (cons symbol function) added-advice)))))
+      (auto-correct-spell-mode 1)
+      (should auto-correct-spell-mode)
+      ;; Should have added advice for jinx, ispell, flyspell and expand-abbrev by default
+      (should (member '(jinx--correct-replace . auto-correct-spell--jinx-advice) added-advice))
+      (should (member '(ispell-command-loop . auto-correct-spell--ispell-advice) added-advice))
+      (should (member '(flyspell-do-correct . auto-correct-spell--flyspell-advice) added-advice))
+      (should (member '(expand-abbrev . auto-correct-spell--expand-abbrev-advice) added-advice))
+
+      (auto-correct-spell-mode -1)
+      (should-not auto-correct-spell-mode)
+      (should-not added-advice))))
 
 (provide 'auto-correct-spell-tests)
 ;;; auto-correct-spell-tests.el ends here
